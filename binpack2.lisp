@@ -198,7 +198,7 @@ will usually leave more unused space on earlier pages."
       (make-instance 'pack-state
                      :state (make-array 0
                                         :fill-pointer 0
-                                        ::adjustable t
+                                        :adjustable t
                                         :initial-element
                                         nil)
                      :shaping growth-policy
@@ -216,7 +216,7 @@ will usually leave more unused space on earlier pages."
       (make-instance 'pack-state
                      :state (make-array 0
                                         :fill-pointer 0
-                                        ::adjustable t
+                                        :adjustable t
                                         :initial-element
                                         nil)
                      :shaping growth-policy
