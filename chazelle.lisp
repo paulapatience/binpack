@@ -763,9 +763,8 @@
                  (let ((gap nil)
                        ;; bottom of vertical edge
                        (v1 (dll-prev v)))
-                   (loop while (and (hv-n v)
-                                    (hv-q v))
-                         for n = (hv-n v)
+                   (loop for n = (hv-n v)
+                         while (and n (hv-q v))
                          do (push (list (hv-y v)
                                         (- (hv-y (hv-n v))
                                            (hv-y v)))
@@ -1026,7 +1025,7 @@
 (defun %make-hole-from-points (points)
   ;; points should be (x1 y1 x2 y2 ...), clockwise around hole
   (make-hole
-   (loop for (x y) on points by 'cddr
+   (loop for (x y) on points by #'cddr
          for v = (make-hole-vertex x y nil)
            then (make-hole-vertex x y v)
          finally (return v))))
@@ -1283,10 +1282,11 @@
                    (destructuring-bind (sl sr) (top1 q1)
                      (assert (= (y sl) (y sr)))
                      (loop while (not (deq-empty-p q))
-                           for (ql qr) = (top2 q)
-                           do (assert (= (y ql) (y qr)))
-                           while (<=y ql sl)
-                           do (pop2 q))))
+                           do (destructuring-bind (ql qr) (top2 q)
+                                (assert (= (y ql) (y qr)))
+                                (unless (<=y ql sl)
+                                  (return))
+                                (pop2 q)))))
                  (loop for x = (top1 q1)
                        until (deq-empty-p q1)
                        do (push2 x q)
